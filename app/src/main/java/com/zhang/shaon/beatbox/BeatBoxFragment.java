@@ -30,7 +30,7 @@ public class BeatBoxFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         beatBox = new BeatBox(getActivity());
     }
 
@@ -40,6 +40,7 @@ public class BeatBoxFragment extends Fragment {
                 .inflate(inflater,R.layout.fragment_beat_box, container, false);
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         binding.recyclerView.setAdapter(new SoundAdapter(beatBox.getSounds()));
+        binding.setAdapter(new SpeedSeekBarAdapter(beatBox, binding.seekBar));
         return binding.getRoot();
     }
 
@@ -86,5 +87,9 @@ public class BeatBoxFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        beatBox.release();
+    }
 }
